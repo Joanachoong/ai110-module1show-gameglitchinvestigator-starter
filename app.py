@@ -78,7 +78,7 @@ with col1:
     submit = st.button("Submit Guess 🚀")
 with col2:
     new_game = st.button("New Game 🔁")
-with col3: # FIXME: Logic breaks here 
+with col3: #FIX: Refactored logic into logic_utils.py using Claude plan mode then ask beofre edits
     show_hint = st.checkbox("Show bonus hint 💡", value=False)
 # FIXME: Logic breaks here 
 if new_game:
@@ -158,7 +158,7 @@ if submit:
 
 st.divider()
 
-# FIXME: Logic breaks here 
+#FIX: Refactored logic into logic_utils.py using Copilot Agent mode
 if show_hint and st.session_state.history and st.session_state.status == "playing":
     prime_text = "prime" if is_prime(st.session_state.secret) else "not prime"
     st.info(

@@ -1,3 +1,4 @@
+#FIX: Refactored logic into logic_utils.py using Claude plan mode then ask beofre edits
 def is_prime(n):
     if n < 2:
         return False
@@ -6,7 +7,7 @@ def is_prime(n):
             return False
     return True
 
-
+#FIX: Refactored logic into logic_utils.py using Claude plan mode then ask beofre edits
 def get_range_for_difficulty(difficulty: str):
     """Return (low, high) inclusive range for a given difficulty."""
     if difficulty == "Easy":
@@ -17,7 +18,7 @@ def get_range_for_difficulty(difficulty: str):
         return 1, 50
     return 1, 100
 
-
+#FIX: Refactored logic into logic_utils.py using Claude plan mode then ask beofre edits
 def parse_guess(raw: str):
     """
     Parse user input into an int guess.
@@ -37,7 +38,7 @@ def parse_guess(raw: str):
         return False, None, "That is not a number."
     return True, value, None
 
-
+#FIX: Refactored logic into logic_utils.py using Claude plan mode then ask beofre edits
 def check_guess(guess, secret):
     """
     Compare guess to secret and return outcome string.
@@ -59,7 +60,7 @@ def check_guess(guess, secret):
             return "Too High"
         return "Too Low"
 
-
+#FIX: Refactored logic into logic_utils.py using Claude plan mode then ask beofre edits
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
     if outcome == "Win":
