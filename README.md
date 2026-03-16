@@ -29,9 +29,18 @@ It wrote the code, ran away, and now the game is unplayable.
 - [ ] Detail which bugs you found.
 - [ ] Explain what fixes you applied.
 
+The goal of this game is to prompt user to pick the correct number. Every time the user pick the number , system will check if the values is higer or lower than the actial value . Given the answer , system will refien by giving a range whihc will hint user where is the correct asnwer lies within the particualr range
+
+One of the bugs i relaized was the hint feature is incorrect . So i add on a feature where it will tell user the corrct range and hint either is a sprime number or not . The second glitch I noticed is the reset game button does not resets the games . The third problem i identified is the delayed update in the Guess History , where it updates the number based on the previous value that user entered , not the current ones . 
+
+I applied the following changes with claude by:
+1. fixing the reset game taht restore the entire game to the initial state
+2. Update the guess history that display the current value that user entered 
+3. Change the hint that follows the logic flow 
+
 ## 📸 Demo
 
-- [ ] [Insert a screenshot of your fixed, winning game here]
+- [ ] [Insert a screenshot of your fixed, winning game here]![The winning page](image.png)
 
 ## 🚀 Stretch Features
 
