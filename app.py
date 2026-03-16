@@ -1,77 +1,12 @@
 import random
 import streamlit as st
-
-def is_prime(n):
-    if n < 2:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
-
-def get_range_for_difficulty(difficulty: str):
-    if difficulty == "Easy":
-        return 1, 20
-    if difficulty == "Normal":
-        return 1, 100
-    if difficulty == "Hard":
-        return 1, 50
-    return 1, 100
-
-
-def parse_guess(raw: str):
-    if raw is None:
-        return False, None, "Enter a guess."
-
-    if raw == "":
-        return False, None, "Enter a guess."
-
-    try:
-        if "." in raw:
-            value = int(float(raw))
-        else:
-            value = int(raw)
-    except Exception:
-        return False, None, "That is not a number."
-
-    return True, value, None
-
-
-def check_guess(guess, secret):
-    if guess == secret:
-        return "Win", "🎉 Correct!"
-
-    try:
-        if guess > secret:
-            return "Too High", "📉 Too high — go lower!"
-        else:
-            return "Too Low", "📈 Too low — go higher!"
-    except TypeError:
-        g = str(guess)
-        if g == secret:
-            return "Win", "🎉 Correct!"
-        if g > secret:
-            return "Too High", "📉 Too high — go lower!"
-        return "Too Low", "📈 Too low — go higher!"
-
-
-def update_score(current_score: int, outcome: str, attempt_number: int):
-    if outcome == "Win":
-        points = 100 - 10 * (attempt_number + 1)
-        if points < 10:
-            points = 10
-        return current_score + points
-
-    if outcome == "Too High":
-        if attempt_number % 2 == 0:
-            return current_score + 5
-        return current_score - 5
-
-    if outcome == "Too Low":
-        return current_score - 5
-
-    return current_score
+from logic_utils import (
+    is_prime,
+    get_range_for_difficulty,
+    parse_guess,
+    check_guess,
+    update_score,
+)
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
@@ -143,9 +78,9 @@ with col1:
     submit = st.button("Submit Guess 🚀")
 with col2:
     new_game = st.button("New Game 🔁")
-with col3:
+with col3: # FIXME: Logic breaks here 
     show_hint = st.checkbox("Show bonus hint 💡", value=False)
-
+# FIXME: Logic breaks here 
 if new_game:
     low, high = get_range_for_difficulty(difficulty)
     st.session_state.secret = random.randint(low, high)
@@ -181,7 +116,14 @@ if submit:
         else:
             secret = st.session_state.secret
 
-        outcome, message = check_guess(guess_int, secret)
+        outcome = check_guess(guess_int, secret)
+
+        if outcome == "Too High":
+            message = "📉 Too high — go lower!"
+        elif outcome == "Too Low":
+            message = "📈 Too low — go higher!"
+        else:
+            message = "🎉 Correct!"
 
         st.warning(message)
 
@@ -216,6 +158,7 @@ if submit:
 
 st.divider()
 
+# FIXME: Logic breaks here 
 if show_hint and st.session_state.history and st.session_state.status == "playing":
     prime_text = "prime" if is_prime(st.session_state.secret) else "not prime"
     st.info(
