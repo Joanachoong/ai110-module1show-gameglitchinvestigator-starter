@@ -12,40 +12,29 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
 
----
+The hint is not working. and the new game is not resetting the game
 
 ## 2. How did you use AI as a teammate?
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
 Claude
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+The reset game feature was sucuesfully implemented with plan of ai architecting on how to fix it.
 
 
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
 Given the  hint feature is incomplete, ai did suggest that the idea of using heat as a hint is generally confusing, because not evryone can get the point and build connection with temperature 
 
-# conditionally show bonus hint:
-if show_hint:
-    secret_val = st.session_state.secret
-    parity = "even" if secret_val % 2 == 0 else "odd"
-    diff = abs(guess_int - secret_val)
-    if diff <= 5:
-        temp = "🔥 Hot"
-    elif diff <= 15:
-        temp = "🌡️ Warm"
-    else:
-        temp = "🧊 Cold"
-    st.info(f"Hint: The number is **{parity}**. You are **{temp}**!")
-
----
 
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
+used py test to see the hint feature 
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
 - Did AI help you design or understand any tests? How?
+The Ai did help me design the hin feaure, in terms of how to come out with better hint for user to understand, 
 
 ---
 

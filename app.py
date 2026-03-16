@@ -190,13 +190,6 @@ if submit:
         elif outcome == "Too Low":
             st.session_state.hint_low = max(st.session_state.hint_low, guess_int + 1)
 
-        if show_hint and outcome != "Win":
-            prime_text = "prime" if is_prime(st.session_state.secret) else "not prime"
-            st.info(
-                f"Hint: The secret number is **{prime_text}**. "
-                f"It is between **{st.session_state.hint_low}** and **{st.session_state.hint_high}**."
-            )
-
         st.session_state.score = update_score(
             current_score=st.session_state.score,
             outcome=outcome,
@@ -222,6 +215,13 @@ if submit:
     st.rerun()
 
 st.divider()
+
+if show_hint and st.session_state.history and st.session_state.status == "playing":
+    prime_text = "prime" if is_prime(st.session_state.secret) else "not prime"
+    st.info(
+        f"Hint: The secret number is **{prime_text}**. "
+        f"It is between **{st.session_state.hint_low}** and **{st.session_state.hint_high}**."
+    )
 
 if st.session_state.history:
     st.subheader("Guess History")
