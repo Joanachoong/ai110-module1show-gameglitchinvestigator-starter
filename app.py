@@ -1,6 +1,15 @@
 import random
 import streamlit as st
 
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+
 def get_range_for_difficulty(difficulty: str):
     if difficulty == "Easy":
         return 1, 20
@@ -35,16 +44,16 @@ def check_guess(guess, secret):
 
     try:
         if guess > secret:
-            return "Too High", "📈 Go HIGHER!"
+            return "Too High", "📉 Too high — go lower!"
         else:
-            return "Too Low", "📉 Go LOWER!"
+            return "Too Low", "📈 Too low — go higher!"
     except TypeError:
         g = str(guess)
         if g == secret:
             return "Win", "🎉 Correct!"
         if g > secret:
-            return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER!"
+            return "Too High", "📉 Too high — go lower!"
+        return "Too Low", "📈 Too low — go higher!"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
@@ -104,6 +113,12 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+if "hint_low" not in st.session_state:
+    st.session_state.hint_low = low
+
+if "hint_high" not in st.session_state:
+    st.session_state.hint_high = high
+
 st.subheader("Make a guess")
 
 st.info(
@@ -129,11 +144,17 @@ with col1:
 with col2:
     new_game = st.button("New Game 🔁")
 with col3:
-    show_hint = st.checkbox("Show hint", value=True)
+    show_hint = st.checkbox("Show bonus hint 💡", value=False)
 
 if new_game:
+    low, high = get_range_for_difficulty(difficulty)
+    st.session_state.secret = random.randint(low, high)
     st.session_state.attempts = 0
-    st.session_state.secret = random.randint(1, 100)
+    st.session_state.score = 0
+    st.session_state.status = "playing"
+    st.session_state.history = []
+    st.session_state.hint_low = low
+    st.session_state.hint_high = high
     st.success("New game started.")
     st.rerun()
 
@@ -162,8 +183,19 @@ if submit:
 
         outcome, message = check_guess(guess_int, secret)
 
-        if show_hint:
-            st.warning(message)
+        st.warning(message)
+
+        if outcome == "Too High":
+            st.session_state.hint_high = min(st.session_state.hint_high, guess_int - 1)
+        elif outcome == "Too Low":
+            st.session_state.hint_low = max(st.session_state.hint_low, guess_int + 1)
+
+        if show_hint and outcome != "Win":
+            prime_text = "prime" if is_prime(st.session_state.secret) else "not prime"
+            st.info(
+                f"Hint: The secret number is **{prime_text}**. "
+                f"It is between **{st.session_state.hint_low}** and **{st.session_state.hint_high}**."
+            )
 
         st.session_state.score = update_score(
             current_score=st.session_state.score,
@@ -187,5 +219,13 @@ if submit:
                     f"Score: {st.session_state.score}"
                 )
 
+    st.rerun()
+
 st.divider()
+
+if st.session_state.history:
+    st.subheader("Guess History")
+    for i, g in enumerate(st.session_state.history, 1):
+        st.write(f"Attempt {i}: {g}")
+
 st.caption("Built by an AI that claims this code is production-ready.")

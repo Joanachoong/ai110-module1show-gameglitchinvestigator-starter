@@ -5,6 +5,10 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 1. What was broken when you started?
 
 - What did the game look like the first time you ran it?
+1. The the run time error of displaying the values when history is updated ,( it display the previous value not the current ones )
+
+2. New game does not reset the game  
+
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
 
@@ -13,8 +17,26 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 2. How did you use AI as a teammate?
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+Claude
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+
+
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+
+Given the  hint feature is incomplete, ai did suggest that the idea of using heat as a hint is generally confusing, because not evryone can get the point and build connection with temperature 
+
+# conditionally show bonus hint:
+if show_hint:
+    secret_val = st.session_state.secret
+    parity = "even" if secret_val % 2 == 0 else "odd"
+    diff = abs(guess_int - secret_val)
+    if diff <= 5:
+        temp = "🔥 Hot"
+    elif diff <= 15:
+        temp = "🌡️ Warm"
+    else:
+        temp = "🧊 Cold"
+    st.info(f"Hint: The number is **{parity}**. You are **{temp}**!")
 
 ---
 
